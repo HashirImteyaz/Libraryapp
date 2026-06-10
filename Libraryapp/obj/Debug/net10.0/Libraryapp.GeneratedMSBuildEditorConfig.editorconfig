@@ -17,47 +17,48 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.TargetFrameworkIdentifier = .NETCoreApp
 build_property.TargetFrameworkVersion = v10.0
+build_property.EntryPointFilePath = 
 build_property.RootNamespace = Libraryapp
 build_property.RootNamespace = Libraryapp
-build_property.ProjectDir = C:\Users\Dell\source\repos\Libraryapp\Libraryapp\
+build_property.ProjectDir = C:\Users\hashi\Downloads\demo_hm\Libraryapp\Libraryapp\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
-build_property.RazorLangVersion = 9.0
+build_property.RazorLangVersion = 10.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\Dell\source\repos\Libraryapp\Libraryapp
+build_property.MSBuildProjectDirectory = C:\Users\hashi\Downloads\demo_hm\Libraryapp\Libraryapp
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 10.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/Dell/source/repos/Libraryapp/Libraryapp/Views/Account/Login.cshtml]
+[C:/Users/hashi/Downloads/demo_hm/Libraryapp/Libraryapp/Views/Account/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Dell/source/repos/Libraryapp/Libraryapp/Views/Home/Index.cshtml]
+[C:/Users/hashi/Downloads/demo_hm/Libraryapp/Libraryapp/Views/Account/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hashi/Downloads/demo_hm/Libraryapp/Libraryapp/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Dell/source/repos/Libraryapp/Libraryapp/Views/Home/Privacy.cshtml]
+[C:/Users/hashi/Downloads/demo_hm/Libraryapp/Libraryapp/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Dell/source/repos/Libraryapp/Libraryapp/Views/Shared/Error.cshtml]
+[C:/Users/hashi/Downloads/demo_hm/Libraryapp/Libraryapp/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Dell/source/repos/Libraryapp/Libraryapp/Views/Shared/_ValidationScriptsPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+[C:/Users/hashi/Downloads/demo_hm/Libraryapp/Libraryapp/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Dell/source/repos/Libraryapp/Libraryapp/Views/_ViewImports.cshtml]
+[C:/Users/hashi/Downloads/demo_hm/Libraryapp/Libraryapp/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Dell/source/repos/Libraryapp/Libraryapp/Views/_ViewStart.cshtml]
+[C:/Users/hashi/Downloads/demo_hm/Libraryapp/Libraryapp/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/Dell/source/repos/Libraryapp/Libraryapp/Views/Shared/_Layout.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = b-xx0m81dsqh
