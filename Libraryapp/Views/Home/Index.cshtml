@@ -1,0 +1,242 @@
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<style>
+    .dashboard {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 2rem 1.5rem 4rem;
+    }
+
+    .welcome-banner {
+        background: linear-gradient(135deg, rgba(108,99,255,0.15), rgba(167,139,250,0.1));
+        border: 1px solid rgba(108,99,255,0.25);
+        border-radius: 20px;
+        padding: 2.5rem 2.5rem;
+        margin-bottom: 2.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+    .welcome-banner::before {
+        content: '';
+        position: absolute;
+        top: -60px; right: -60px;
+        width: 220px; height: 220px;
+        background: radial-gradient(circle, rgba(108,99,255,0.2) 0%, transparent 70%);
+        border-radius: 50%;
+    }
+
+    .welcome-banner h2 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin-bottom: 0.4rem;
+        background: linear-gradient(135deg, #e2e8f0, #a78bfa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .welcome-banner p {
+        color: #94a3b8;
+        font-size: 0.95rem;
+    }
+    .welcome-banner .emoji-large {
+        font-size: 3.5rem;
+        position: absolute;
+        right: 2.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        filter: drop-shadow(0 4px 12px rgba(108,99,255,0.3));
+    }
+
+    /* Stats grid */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.25rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .stat-card {
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.09);
+        border-radius: 16px;
+        padding: 1.5rem;
+        transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        cursor: default;
+    }
+    .stat-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+        border-color: rgba(108,99,255,0.3);
+    }
+
+    .stat-icon {
+        font-size: 1.75rem;
+        margin-bottom: 0.75rem;
+    }
+    .stat-value {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.25rem;
+        background: linear-gradient(135deg, #e2e8f0, #a78bfa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .stat-label {
+        font-size: 0.8rem;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+    }
+
+    /* Quick actions */
+    .section-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #e2e8f0;
+        margin-bottom: 1.25rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .section-title::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: rgba(255,255,255,0.08);
+        margin-left: 8px;
+    }
+
+    .actions-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1rem;
+    }
+
+    .action-card {
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 16px;
+        padding: 1.5rem;
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        text-decoration: none;
+        transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s, background 0.2s;
+    }
+    .action-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+        border-color: rgba(108,99,255,0.35);
+        background: rgba(108,99,255,0.08);
+    }
+
+    .action-icon-wrap {
+        width: 44px; height: 44px;
+        border-radius: 12px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.3rem;
+        flex-shrink: 0;
+    }
+    .icon-purple { background: rgba(108,99,255,0.18); }
+    .icon-pink   { background: rgba(236,72,153,0.18); }
+    .icon-teal   { background: rgba(20,184,166,0.18); }
+    .icon-amber  { background: rgba(245,158,11,0.18); }
+
+    .action-text h3 {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #e2e8f0;
+        margin-bottom: 0.25rem;
+    }
+    .action-text p {
+        font-size: 0.78rem;
+        color: #64748b;
+        line-height: 1.4;
+    }
+
+    /* API badge */
+    .api-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.72rem;
+        background: rgba(108,99,255,0.15);
+        border: 1px solid rgba(108,99,255,0.25);
+        color: #a78bfa;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: background 0.2s;
+    }
+    .api-badge:hover { background: rgba(108,99,255,0.25); }
+    .api-dot { width: 6px; height: 6px; background: #6c63ff; border-radius: 50%; animation: pulse 2s infinite; }
+    @@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity: 0.4; } }
+</style>
+
+<div class="dashboard">
+    <!-- Welcome Banner -->
+    <div class="welcome-banner">
+        <h2>Welcome back, @User.Identity?.Name! 👋</h2>
+        <p>Here's an overview of your library system. Use the API endpoints or Swagger to manage data.</p>
+        <span class="emoji-large">📚</span>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">📖</div>
+            <div class="stat-value">Books</div>
+            <div class="stat-label">Manage via /api/books</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">🎓</div>
+            <div class="stat-value">Students</div>
+            <div class="stat-label">Manage via /api/students</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">🔄</div>
+            <div class="stat-value">Borrows</div>
+            <div class="stat-label">Manage via /api/borrow</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">🔐</div>
+            <div class="stat-value">Secure</div>
+            <div class="stat-label">All endpoints authorized</div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="section-title">🚀 Quick Access</div>
+    <div class="actions-grid">
+        <a href="/swagger" class="action-card" id="link-swagger">
+            <div class="action-icon-wrap icon-purple">🛠️</div>
+            <div class="action-text">
+                <h3>Swagger API Explorer</h3>
+                <p>Browse and test all REST API endpoints interactively</p>
+            </div>
+        </a>
+        <a href="/api/books" class="action-card" id="link-books">
+            <div class="action-icon-wrap icon-pink">📘</div>
+            <div class="action-text">
+                <h3>Books API</h3>
+                <p>List, add, update, and delete books in the library</p>
+            </div>
+        </a>
+        <a href="/api/students" class="action-card" id="link-students">
+            <div class="action-icon-wrap icon-teal">👨‍🎓</div>
+            <div class="action-text">
+                <h3>Students API</h3>
+                <p>Manage student records and branch information</p>
+            </div>
+        </a>
+        <a href="/api/borrow" class="action-card" id="link-borrow">
+            <div class="action-icon-wrap icon-amber">📋</div>
+            <div class="action-text">
+                <h3>Borrow Records API</h3>
+                <p>Track book borrowing and returns in real time</p>
+            </div>
+        </a>
+    </div>
+</div>
