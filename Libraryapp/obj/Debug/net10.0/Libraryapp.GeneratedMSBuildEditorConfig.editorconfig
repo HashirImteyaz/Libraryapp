@@ -39,12 +39,24 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/hashi/Downloads/demo_hm/Libraryapp/Libraryapp/Views/Home/Books.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxCb29rcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hashi/Downloads/demo_hm/Libraryapp/Libraryapp/Views/Home/Borrow.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxCb3Jyb3cuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/hashi/Downloads/demo_hm/Libraryapp/Libraryapp/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/hashi/Downloads/demo_hm/Libraryapp/Libraryapp/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hashi/Downloads/demo_hm/Libraryapp/Libraryapp/Views/Home/Students.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTdHVkZW50cy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/hashi/Downloads/demo_hm/Libraryapp/Libraryapp/Views/Shared/Error.cshtml]
