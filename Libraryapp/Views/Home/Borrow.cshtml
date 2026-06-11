@@ -1,0 +1,474 @@
+@{
+    ViewData["Title"] = "Manage Borrows";
+}
+
+<style>
+    .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 2rem 1.5rem 4rem;
+    }
+
+    .header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .header-title h2 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #e2e8f0, var(--accent2));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 0.25rem;
+    }
+
+    .header-title p {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
+
+    .btn {
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(108, 99, 255, 0.4);
+        opacity: 0.95;
+    }
+
+    .btn-secondary {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid var(--border);
+        color: var(--text);
+    }
+
+    .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.15);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+
+    .btn-sm {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+        border-radius: 6px;
+    }
+
+    /* Table styles */
+    .table-wrapper {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+        font-size: 0.9rem;
+    }
+
+    th {
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text-muted);
+        font-weight: 600;
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--border);
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+    }
+
+    td {
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--border);
+        color: var(--text);
+    }
+
+    tr:last-child td {
+        border-bottom: none;
+    }
+
+    tr:hover td {
+        background: rgba(255, 255, 255, 0.01);
+    }
+
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .badge-active {
+        background: rgba(245, 158, 11, 0.15);
+        color: #f59e0b;
+        border: 1px solid rgba(245, 158, 11, 0.25);
+    }
+
+    .badge-returned {
+        background: rgba(52, 211, 153, 0.15);
+        color: var(--success);
+        border: 1px solid rgba(52, 211, 153, 0.25);
+    }
+
+    /* Modal Layout */
+    .modal-overlay {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(13, 15, 26, 0.8);
+        backdrop-filter: blur(8px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s;
+    }
+
+    .modal-overlay.active {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .modal-box {
+        background: #151829;
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        width: 100%;
+        max-width: 500px;
+        padding: 2rem;
+        transform: translateY(-20px);
+        transition: transform 0.3s;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-overlay.active .modal-box {
+        transform: translateY(0);
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .modal-header h3 {
+        font-size: 1.3rem;
+        font-weight: 700;
+    }
+
+    .modal-close {
+        background: transparent;
+        border: none;
+        color: var(--text-muted);
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+
+    .form-group {
+        margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+    }
+
+    .form-control {
+        width: 100%;
+        background: rgba(0, 0, 0, 0.25);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 10px 14px;
+        color: var(--text);
+        font-size: 0.9rem;
+        outline: none;
+    }
+
+    .form-control:focus {
+        border-color: var(--accent);
+    }
+
+    .modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 2rem;
+    }
+</style>
+
+<div class="container">
+    <div class="header-row">
+        <div class="header-title">
+            <h2>Borrow Records</h2>
+            <p>Track checked out books, record returns, and manage checkout history</p>
+        </div>
+        <button class="btn" onclick="openBorrowModal()">
+            <span>🔄</span> New Borrow Record
+        </button>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 10%">Record ID</th>
+                    <th style="width: 25%">Student</th>
+                    <th style="width: 30%">Book Title</th>
+                    <th style="width: 15%">Borrow Date</th>
+                    <th style="width: 15%">Return Date</th>
+                    <th style="width: 10%; text-align: center;">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="borrowTableBody">
+                <tr>
+                    <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 2rem;">Loading checkout logs...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Borrow Modal -->
+<div class="modal-overlay" id="borrowModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>Issue Book / Create Borrow Record</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <form id="borrowForm" onsubmit="createBorrowRecord(event)">
+            
+            <div class="form-group">
+                <label for="studentSelect">Select Student</label>
+                <select id="studentSelect" class="form-control" required>
+                    <option value="">-- Choose Student --</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="bookSelect">Select Available Book</label>
+                <select id="bookSelect" class="form-control" required>
+                    <option value="">-- Choose Book --</option>
+                </select>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button type="submit" class="btn">Confirm Checkout</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    let allStudents = [];
+    let allBooks = [];
+    let borrowRecords = [];
+
+    // On Load
+    document.addEventListener("DOMContentLoaded", () => {
+        loadData();
+    });
+
+    async function loadData() {
+        try {
+            // Load students, books, and borrow records in parallel
+            const [studentsRes, booksRes, borrowRes] = await Promise.all([
+                fetch('/api/students'),
+                fetch('/api/books'),
+                fetch('/api/borrow')
+            ]);
+
+            if (!studentsRes.ok || !booksRes.ok || !borrowRes.ok) {
+                throw new Error("Failed to load dependency data from API endpoints");
+            }
+
+            allStudents = await studentsRes.json();
+            allBooks = await booksRes.json();
+            borrowRecords = await borrowRes.json();
+
+            renderBorrowTable();
+        } catch (error) {
+            console.error(error);
+            document.getElementById('borrowTableBody').innerHTML = `
+                <tr>
+                    <td colspan="6" style="text-align: center; color: var(--danger); padding: 2rem;">
+                        ⚠️ Error loading records. Please confirm your authentication session is active.
+                    </td>
+                </tr>`;
+        }
+    }
+
+    function renderBorrowTable() {
+        const tbody = document.getElementById('borrowTableBody');
+        if (borrowRecords.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 2rem;">
+                        No borrow records found.
+                    </td>
+                </tr>`;
+            return;
+        }
+
+        // Create fast lookup maps
+        const studentMap = new Map(allStudents.map(s => [s.studentId, s]));
+        const bookMap = new Map(allBooks.map(b => [b.bookId, b]));
+
+        tbody.innerHTML = borrowRecords.map(record => {
+            const student = studentMap.get(record.studentId);
+            const book = bookMap.get(record.bookId);
+
+            const studentText = student ? `${escapeHtml(student.name)} (${escapeHtml(student.branch)})` : `Unknown Student (ID #${record.studentId})`;
+            const bookText = book ? escapeHtml(book.title) : `Unknown Book (ID #${record.bookId})`;
+            
+            const borrowDateStr = formatDate(record.borrowDate);
+            const returnDateStr = record.returnDate ? formatDate(record.returnDate) : null;
+
+            return `
+                <tr>
+                    <td>#${record.borrowId}</td>
+                    <td style="font-weight: 500;">${studentText}</td>
+                    <td>${bookText}</td>
+                    <td>${borrowDateStr}</td>
+                    <td>
+                        ${returnDateStr ? returnDateStr : '<span class="badge badge-active">Active</span>'}
+                    </td>
+                    <td style="text-align: center;">
+                        ${!returnDateStr ? `
+                            <button class="btn btn-secondary btn-sm" onclick="returnBook(${record.bookId})" title="Process Return">
+                                ↩️ Return
+                            </button>
+                        ` : `
+                            <span class="badge badge-returned" style="opacity: 0.7;">Returned</span>
+                        `}
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    function openBorrowModal() {
+        // Populate Student Select dropdown
+        const studentSelect = document.getElementById('studentSelect');
+        studentSelect.innerHTML = '<option value="">-- Choose Student --</option>' + 
+            allStudents.map(s => `<option value="${s.studentId}">${escapeHtml(s.name)} (Dept: ${escapeHtml(s.branch)})</option>`).join('');
+
+        // Populate Book Select dropdown (only available books)
+        const bookSelect = document.getElementById('bookSelect');
+        const availableBooks = allBooks.filter(b => b.isAvailable);
+        
+        if (availableBooks.length === 0) {
+            bookSelect.innerHTML = '<option value="">⚠️ No books currently available for checkout</option>';
+        } else {
+            bookSelect.innerHTML = '<option value="">-- Choose Book --</option>' + 
+                availableBooks.map(b => `<option value="${b.bookId}">${escapeHtml(b.title)} (${escapeHtml(b.genre)})</option>`).join('');
+        }
+
+        document.getElementById('borrowModal').classList.add('active');
+    }
+
+    function closeModal() {
+        document.getElementById('borrowModal').classList.remove('active');
+    }
+
+    async function createBorrowRecord(event) {
+        event.preventDefault();
+
+        const studentId = document.getElementById('studentSelect').value;
+        const bookId = document.getElementById('bookSelect').value;
+
+        if (!studentId || !bookId) {
+            alert("Please select both a student and a book.");
+            return;
+        }
+
+        try {
+            const url = `/api/borrow/borrow?studentId=${studentId}&bookId=${bookId}`;
+            const response = await fetch(url, {
+                method: 'POST'
+            });
+
+            if (!response.ok) {
+                const errText = await response.text();
+                throw new Error(errText || "Error creating checkout record");
+            }
+
+            closeModal();
+            loadData(); // Refresh lists
+        } catch (error) {
+            alert("⚠️ " + error.message);
+        }
+    }
+
+    async function returnBook(bookId) {
+        if (!confirm("Confirm book return?")) return;
+
+        try {
+            const url = `/api/borrow/return?bookId=${bookId}`;
+            const response = await fetch(url, {
+                method: 'POST'
+            });
+
+            if (!response.ok) {
+                const errText = await response.text();
+                throw new Error(errText || "Error completing return");
+            }
+
+            loadData(); // Refresh lists
+        } catch (error) {
+            alert("⚠️ " + error.message);
+        }
+    }
+
+    function formatDate(dateString) {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        return date.toLocaleDateString(undefined, { 
+            year: 'numeric', 
+            month: 'short', 
+            day: 'numeric' 
+        }) + ' ' + date.toLocaleTimeString(undefined, { 
+            hour: '2-digit', 
+            minute: '2-digit' 
+        });
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/&/g, "&amp;")
+                  .replace(/</g, "&lt;")
+                  .replace(/>/g, "&gt;")
+                  .replace(/"/g, "&quot;")
+                  .replace(/'/g, "&#039;");
+    }
+</script>

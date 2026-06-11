@@ -1,0 +1,492 @@
+@{
+    ViewData["Title"] = "Manage Students";
+}
+
+<style>
+    .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 2rem 1.5rem 4rem;
+    }
+
+    .header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .header-title h2 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #e2e8f0, var(--accent2));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 0.25rem;
+    }
+
+    .header-title p {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
+
+    .btn {
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(108, 99, 255, 0.4);
+        opacity: 0.95;
+    }
+
+    .btn-secondary {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid var(--border);
+        color: var(--text);
+    }
+
+    .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.15);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+
+    /* Controls bar */
+    .controls-bar {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 1rem 1.25rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .search-input {
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 10px 16px;
+        color: var(--text);
+        font-size: 0.9rem;
+        flex: 1;
+        outline: none;
+        transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+        border-color: var(--accent);
+    }
+
+    /* Table styles */
+    .table-wrapper {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+        font-size: 0.9rem;
+    }
+
+    th {
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text-muted);
+        font-weight: 600;
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--border);
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+    }
+
+    td {
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--border);
+        color: var(--text);
+    }
+
+    tr:last-child td {
+        border-bottom: none;
+    }
+
+    tr:hover td {
+        background: rgba(255, 255, 255, 0.01);
+    }
+
+    .actions {
+        display: flex;
+        gap: 8px;
+    }
+
+    .action-btn {
+        background: transparent;
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .action-btn:hover {
+        background: var(--surface-hover);
+        color: var(--text);
+        border-color: var(--text-muted);
+    }
+
+    .action-btn.btn-edit-hover:hover {
+        color: var(--accent2);
+        border-color: var(--accent2);
+        background: rgba(167, 139, 250, 0.1);
+    }
+
+    .action-btn.btn-delete-hover:hover {
+        color: var(--danger);
+        border-color: var(--danger);
+        background: rgba(248, 113, 113, 0.1);
+    }
+
+    /* Modal Layout */
+    .modal-overlay {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(13, 15, 26, 0.8);
+        backdrop-filter: blur(8px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s;
+    }
+
+    .modal-overlay.active {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .modal-box {
+        background: #151829;
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        width: 100%;
+        max-width: 500px;
+        padding: 2rem;
+        transform: translateY(-20px);
+        transition: transform 0.3s;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-overlay.active .modal-box {
+        transform: translateY(0);
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .modal-header h3 {
+        font-size: 1.3rem;
+        font-weight: 700;
+    }
+
+    .modal-close {
+        background: transparent;
+        border: none;
+        color: var(--text-muted);
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+
+    .form-group {
+        margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+    }
+
+    .form-control {
+        width: 100%;
+        background: rgba(0, 0, 0, 0.25);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 10px 14px;
+        color: var(--text);
+        font-size: 0.9rem;
+        outline: none;
+    }
+
+    .form-control:focus {
+        border-color: var(--accent);
+    }
+
+    .modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 2rem;
+    }
+</style>
+
+<div class="container">
+    <div class="header-row">
+        <div class="header-title">
+            <h2>Students Registry</h2>
+            <p>Manage enrolled students and branch assignments</p>
+        </div>
+        <button class="btn" onclick="openAddModal()">
+            <span>➕</span> Enroll Student
+        </button>
+    </div>
+
+    <!-- Search / Filter -->
+    <div class="controls-bar">
+        <span>🔍</span>
+        <input type="text" id="searchBox" class="search-input" placeholder="Search by student name or branch..." oninput="filterStudents()" />
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 20%">Student ID</th>
+                    <th style="width: 50%">Name</th>
+                    <th style="width: 20%">Branch</th>
+                    <th style="width: 10%; text-align: center;">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="studentsTableBody">
+                <tr>
+                    <td colspan="4" style="text-align: center; color: var(--text-muted); padding: 2rem;">Loading students...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Add/Edit Modal -->
+<div class="modal-overlay" id="studentModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3 id="modalTitle">Enroll Student</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <form id="studentForm" onsubmit="saveStudent(event)">
+            <input type="hidden" id="studentId" />
+            
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" class="form-control" required placeholder="e.g. Rahul Kumar" />
+            </div>
+
+            <div class="form-group">
+                <label for="branch">Branch / Department</label>
+                <input type="text" id="branch" class="form-control" required placeholder="e.g. CSE" />
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button type="submit" class="btn">Save Record</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    let allStudents = [];
+
+    // On Load
+    document.addEventListener("DOMContentLoaded", () => {
+        loadStudents();
+    });
+
+    async function loadStudents() {
+        try {
+            const response = await fetch('/api/students');
+            if (!response.ok) throw new Error("Failed to fetch students");
+            allStudents = await response.json();
+            renderStudents(allStudents);
+        } catch (error) {
+            console.error(error);
+            document.getElementById('studentsTableBody').innerHTML = `
+                <tr>
+                    <td colspan="4" style="text-align: center; color: var(--danger); padding: 2rem;">
+                        ⚠️ Error loading students. Please verify your authentication state.
+                    </td>
+                </tr>`;
+        }
+    }
+
+    function renderStudents(studentsList) {
+        const tbody = document.getElementById('studentsTableBody');
+        if (studentsList.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="4" style="text-align: center; color: var(--text-muted); padding: 2rem;">
+                        No students enrolled yet.
+                    </td>
+                </tr>`;
+            return;
+        }
+
+        tbody.innerHTML = studentsList.map(student => `
+            <tr>
+                <td>#${student.studentId}</td>
+                <td style="font-weight: 500;">${escapeHtml(student.name)}</td>
+                <td><span style="font-family: monospace; background: rgba(255,255,255,0.06); padding: 4px 8px; border-radius: 4px;">${escapeHtml(student.branch)}</span></td>
+                <td style="text-align: center;">
+                    <div class="actions" style="justify-content: center;">
+                        <button class="action-btn btn-edit-hover" onclick="openEditModal(${student.studentId})" title="Edit Student">
+                            ✏️
+                        </button>
+                        <button class="action-btn btn-delete-hover" onclick="deleteStudent(${student.studentId})" title="Delete Student">
+                            🗑️
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    function filterStudents() {
+        const query = document.getElementById('searchBox').value.toLowerCase().trim();
+        if (!query) {
+            renderStudents(allStudents);
+            return;
+        }
+
+        const filtered = allStudents.filter(s => 
+            s.name.toLowerCase().includes(query) ||
+            s.branch.toLowerCase().includes(query)
+        );
+        renderStudents(filtered);
+    }
+
+    // Modal helpers
+    function openAddModal() {
+        document.getElementById('modalTitle').innerText = "Enroll Student";
+        document.getElementById('studentId').value = "";
+        document.getElementById('name').value = "";
+        document.getElementById('branch').value = "";
+        
+        document.getElementById('studentModal').classList.add('active');
+    }
+
+    function openEditModal(id) {
+        const student = allStudents.find(s => s.studentId === id);
+        if (!student) return;
+
+        document.getElementById('modalTitle').innerText = "Edit Student Details";
+        document.getElementById('studentId').value = student.studentId;
+        document.getElementById('name').value = student.name;
+        document.getElementById('branch').value = student.branch;
+
+        document.getElementById('studentModal').classList.add('active');
+    }
+
+    function closeModal() {
+        document.getElementById('studentModal').classList.remove('active');
+    }
+
+    async function saveStudent(event) {
+        event.preventDefault();
+
+        const id = document.getElementById('studentId').value;
+        const studentData = {
+            name: document.getElementById('name').value.trim(),
+            branch: document.getElementById('branch').value.trim()
+        };
+
+        const isEdit = id !== "";
+        const url = isEdit ? `/api/students/${id}` : '/api/students';
+        const method = isEdit ? 'PUT' : 'POST';
+
+        if (isEdit) {
+            studentData.studentId = parseInt(id);
+        }
+
+        try {
+            const response = await fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(studentData)
+            });
+
+            if (!response.ok) {
+                const errText = await response.text();
+                throw new Error(errText || "Error saving student");
+            }
+
+            closeModal();
+            loadStudents();
+        } catch (error) {
+            alert("⚠️ " + error.message);
+        }
+    }
+
+    async function deleteStudent(id) {
+        if (!confirm("Are you sure you want to de-enroll this student? All borrow history for this student may be affected.")) return;
+
+        try {
+            const response = await fetch(`/api/students/${id}`, {
+                method: 'DELETE'
+            });
+
+            if (!response.ok) {
+                const errText = await response.text();
+                throw new Error(errText || "Error deleting student");
+            }
+
+            loadStudents();
+        } catch (error) {
+            alert("⚠️ " + error.message);
+        }
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/&/g, "&amp;")
+                  .replace(/</g, "&lt;")
+                  .replace(/>/g, "&gt;")
+                  .replace(/"/g, "&quot;")
+                  .replace(/'/g, "&#039;");
+    }
+</script>

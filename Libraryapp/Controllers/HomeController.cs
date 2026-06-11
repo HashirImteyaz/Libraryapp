@@ -13,6 +13,21 @@ namespace Libraryapp.Controllers
             return View();
         }
 
+        public IActionResult Books()
+        {
+            return View();
+        }
+
+        public IActionResult Students()
+        {
+            return View();
+        }
+
+        public IActionResult Borrow()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();
